@@ -1,7 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants/color_constants.dart';
+import 'package:weather_app/model/location_model.dart';
+import 'package:weather_app/model/weather_model.dart';
+import 'package:weather_app/providers/location_provider.dart';
+import 'package:weather_app/services/location_services.dart';
+import 'package:weather_app/services/weather_services.dart';
 import 'package:weather_app/view/home/widgets/detail_widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,8 +22,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController _locationController = TextEditingController();
+  LocationServices locationServices = LocationServices();
+  WeatherServices weatherServices = WeatherServices();
+  LocationModel locationModel = LocationModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getLocData();
+    getWeather();
+
+    super.initState();
+  }
+
+  getLocData() async {
+    await locationServices.getLocation(context: context);
+  }
+
+  getWeather() async {
+    await weatherServices.getWeatherDetail(context: context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var locProvider = Provider.of<LocationProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Weather App'),
@@ -30,8 +61,22 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: TextFormField(
                 textAlign: TextAlign.left,
+                controller: _locationController,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                      onPressed: () async {
+                        log('Search Pressed');
+                        SharedPreferences preferences =
+                            await SharedPreferences.getInstance();
+                        preferences.clear();
+                        preferences.setString('city', _locationController.text);
+                        var loc = locationModel.copyWith(
+                            city: _locationController.text);
+                        locProvider.setLocationFromModel(loc);
+                        await getWeather();
+                      },
+                      icon: Icon(Icons.search)),
                   contentPadding:
                       EdgeInsets.only(left: 30, top: 10, bottom: 10, right: 20),
                   fillColor: labelBlue,
@@ -40,6 +85,24 @@ class _HomePageState extends State<HomePage> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                decoration: BoxDecoration(
+                    color: labelRed, borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.location_on),
+                    Text(locProvider.locationModel.city != null
+                        ? locProvider.locationModel.city.toString()
+                        : 'Getting Locations')
+                  ],
                 ),
               ),
             ),

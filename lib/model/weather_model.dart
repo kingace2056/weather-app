@@ -196,14 +196,14 @@ class Current {
 
 class Condition {
   Condition({
-    required this.text,
-    required this.icon,
-    required this.code,
+    this.text,
+     this.icon,
+     this.code,
   });
 
-  String text;
-  String icon;
-  int code;
+  String? text;
+  String? icon;
+  int? code;
 
   Condition copyWith({
     String? text,
@@ -231,24 +231,24 @@ class Condition {
 
 class Location {
   Location({
-    required this.name,
-    required this.region,
-    required this.country,
-    required this.lat,
-    required this.lon,
-    required this.tzId,
-    required this.localtimeEpoch,
-    required this.localtime,
+     this.name,
+    this.region,
+     this.country,
+     this.lat,
+     this.lon,
+     this.tzId,
+     this.localtimeEpoch,
+     this.localtime,
   });
 
-  String name;
-  String region;
-  String country;
-  double lat;
-  double lon;
-  String tzId;
-  int localtimeEpoch;
-  String localtime;
+  String? name;
+  String? region;
+  String? country;
+  double? lat;
+  double? lon;
+  String? tzId;
+  int? localtimeEpoch;
+  String? localtime;
 
   Location copyWith({
     String? name,
