@@ -8,7 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants/color_constants.dart';
 import 'package:weather_app/model/location_model.dart';
 import 'package:weather_app/model/weather_model.dart';
+import 'package:weather_app/providers/loc_provider.dart';
 import 'package:weather_app/providers/location_provider.dart';
+import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/services/location_services.dart';
 import 'package:weather_app/services/weather_services.dart';
 import 'package:weather_app/view/home/widgets/detail_widgets.dart';
@@ -24,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _locationController = TextEditingController();
   LocationServices locationServices = LocationServices();
   WeatherServices weatherServices = WeatherServices();
-  LocationModel locationModel = LocationModel();
   @override
   void initState() {
     // TODO: implement initState
@@ -45,7 +46,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var locProvider = Provider.of<LocationProvider>(context);
+    var locProvider = Provider.of<LocProvider>(context);
+    var weatherProvider = Provider.of<WeatherProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Weather App'),
@@ -60,6 +62,15 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: TextFormField(
+                onFieldSubmitted: (value) async {
+                  log('Search Pressed');
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  preferences.setString('city', value);
+
+                  await getWeather();
+                },
                 textAlign: TextAlign.left,
                 controller: _locationController,
                 textAlignVertical: TextAlignVertical.center,
@@ -71,9 +82,7 @@ class _HomePageState extends State<HomePage> {
                             await SharedPreferences.getInstance();
                         preferences.clear();
                         preferences.setString('city', _locationController.text);
-                        var loc = locationModel.copyWith(
-                            city: _locationController.text);
-                        locProvider.setLocationFromModel(loc);
+
                         await getWeather();
                       },
                       icon: Icon(Icons.search)),
@@ -99,9 +108,11 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.location_on),
-                    Text(locProvider.locationModel.city != null
-                        ? locProvider.locationModel.city.toString()
-                        : 'Getting Locations')
+                    Text(weatherProvider.weatherModel.location!.region == '' ||
+                            weatherProvider.weatherModel.location!.region ==
+                                'null'
+                        ? 'Getting Location'
+                        : weatherProvider.weatherModel.location!.region)
                   ],
                 ),
               ),
@@ -154,23 +165,58 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   DetailWidget(
                     title: 'Wind',
-                    values: '30MPH',
+                    values: weatherProvider.weatherModel.current?.windMph !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.windMph.toString()}MPH'
+                        : '  MPH',
                   ),
                   DetailWidget(
                     title: 'Wind Direction',
-                    values: 'SSW',
+                    values: weatherProvider.weatherModel.current?.windDir !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.windMph.toString()}'
+                        : '  ...',
                   ),
                   DetailWidget(
                     title: 'Pressure',
-                    values: '10.3 Inch',
+                    values: weatherProvider.weatherModel.current?.pressureMb !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.pressureMb.toString()}'
+                        : '  milibar',
                   ),
                   DetailWidget(
                     title: 'Precipitation',
-                    values: '0.3',
+                    values: weatherProvider.weatherModel.current?.precipMm !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.precipMm.toString()}'
+                        : ' mm',
                   ),
-                  DetailWidget(title: 'Humidity', values: '72'),
-                  DetailWidget(title: 'Feels Like', values: '30 \u2109'),
-                  DetailWidget(title: 'UV', values: '3'),
+                  DetailWidget(
+                    title: 'Humidity',
+                    values: weatherProvider.weatherModel.current?.humidity !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.humidity.toString()}'
+                        : ' ',
+                  ),
+                  DetailWidget(
+                    title: 'Feels Like',
+                    values: weatherProvider.weatherModel.current?.tempF != null
+                        ? '${weatherProvider.weatherModel.current!.tempF.toString()}\u2109'
+                        : ' \u2109',
+                  ),
+                  DetailWidget(
+                    title: 'UV',
+                    values: weatherProvider.weatherModel.current!.uv != null
+                        ? '${weatherProvider.weatherModel.current?.uv.toString()}'
+                        : ' ',
+                  ),
+                  DetailWidget(
+                    title: 'Last Updated',
+                    values: weatherProvider.weatherModel.current!.lastUpdated !=
+                            null
+                        ? '${weatherProvider.weatherModel.current?.lastUpdated.toString()}'
+                        : ' ',
+                  ),
                   SizedBox(
                     height: 90,
                   )

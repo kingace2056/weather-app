@@ -6,9 +6,10 @@ import 'package:weather_app/constants/url_constants.dart';
 import 'package:weather_app/model/weather_model.dart';
 import 'package:weather_app/providers/location_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/services/location_services.dart';
 
-class WeatherServices {
+class WeatherServices extends ChangeNotifier {
   getWeatherDetail({required BuildContext context}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -17,10 +18,11 @@ class WeatherServices {
     String? longitude = prefs.getString('longitude');
     var locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
+    var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
     try {
       if (city == null || city == 'null' || city == '') {
         await LocationServices().getLocation(context: context);
-
+        log('chkPoint 1 ');
         var reqUri = Uri(
             scheme: 'https',
             host: baseUrl,
@@ -30,9 +32,11 @@ class WeatherServices {
               'q': '$latitude,$longitude'
             });
         http.Response response = await http.get(reqUri);
-        return weatherModelFromJson(response.body);
-        log(response.body.toString());
+        log('chkPoint 2 ');
+        weatherProvider.setWeather(response.body);
+        log('chkPoint 3');
       } else {
+        log('chkPoint 4 ');
         var reqUri = Uri(
             scheme: 'https',
             host: baseUrl,
@@ -41,11 +45,16 @@ class WeatherServices {
               'key': '1bc0383d81444b58b1432929200711',
               'q': prefs.getString('city')
             });
+        log('chkPoint 5 ');
         http.Response response = await http.get(reqUri);
+        log('chkPoint 6 ');
         log(response.body.toString());
-        return weatherModelFromJson(response.body);
+        weatherProvider.setWeather(response.body);
+        log('chkPoint 7 ');
       }
+      notifyListeners();
     } catch (e) {
+      log('Woops error');
       log(e.toString());
     }
   }

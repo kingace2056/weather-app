@@ -12,12 +12,12 @@ String weatherModelToJson(WeatherModel data) => json.encode(data.toJson());
 
 class WeatherModel {
   WeatherModel({
-    required this.location,
-    required this.current,
+    this.location,
+    this.current,
   });
 
-  Location location;
-  Current current;
+  Location? location;
+  Current? current;
 
   WeatherModel copyWith({
     Location? location,
@@ -34,8 +34,8 @@ class WeatherModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "location": location.toJson(),
-        "current": current.toJson(),
+        "location": location?.toJson(),
+        "current": current?.toJson(),
       };
 }
 
@@ -66,54 +66,54 @@ class Current {
     required this.gustKph,
   });
 
-  int lastUpdatedEpoch;
+  num lastUpdatedEpoch;
   String lastUpdated;
-  int tempC;
-  double tempF;
-  int isDay;
+  num tempC;
+  num tempF;
+  num isDay;
   Condition condition;
-  double windMph;
-  double windKph;
-  int windDegree;
+  num windMph;
+  num windKph;
+  num windDegree;
   String windDir;
-  int pressureMb;
-  double pressureIn;
-  int precipMm;
-  int precipIn;
-  int humidity;
-  int cloud;
-  int feelslikeC;
-  double feelslikeF;
-  int visKm;
-  int visMiles;
-  int uv;
-  double gustMph;
-  double gustKph;
+  num pressureMb;
+  num pressureIn;
+  num precipMm;
+  num precipIn;
+  num humidity;
+  num cloud;
+  num feelslikeC;
+  num feelslikeF;
+  num visKm;
+  num visMiles;
+  num uv;
+  num gustMph;
+  num gustKph;
 
   Current copyWith({
-    int? lastUpdatedEpoch,
+    num? lastUpdatedEpoch,
     String? lastUpdated,
-    int? tempC,
-    double? tempF,
-    int? isDay,
+    num? tempC,
+    num? tempF,
+    num? isDay,
     Condition? condition,
-    double? windMph,
-    double? windKph,
-    int? windDegree,
+    num? windMph,
+    num? windKph,
+    num? windDegree,
     String? windDir,
-    int? pressureMb,
-    double? pressureIn,
-    int? precipMm,
-    int? precipIn,
-    int? humidity,
-    int? cloud,
-    int? feelslikeC,
-    double? feelslikeF,
-    int? visKm,
-    int? visMiles,
-    int? uv,
-    double? gustMph,
-    double? gustKph,
+    num? pressureMb,
+    num? pressureIn,
+    num? precipMm,
+    num? precipIn,
+    num? humidity,
+    num? cloud,
+    num? feelslikeC,
+    num? feelslikeF,
+    num? visKm,
+    num? visMiles,
+    num? uv,
+    num? gustMph,
+    num? gustKph,
   }) =>
       Current(
         lastUpdatedEpoch: lastUpdatedEpoch ?? this.lastUpdatedEpoch,
@@ -145,26 +145,26 @@ class Current {
         lastUpdatedEpoch: json["last_updated_epoch"],
         lastUpdated: json["last_updated"],
         tempC: json["temp_c"],
-        tempF: json["temp_f"].toDouble(),
+        tempF: json["temp_f"],
         isDay: json["is_day"],
         condition: Condition.fromJson(json["condition"]),
-        windMph: json["wind_mph"].toDouble(),
-        windKph: json["wind_kph"].toDouble(),
+        windMph: json["wind_mph"],
+        windKph: json["wind_kph"],
         windDegree: json["wind_degree"],
         windDir: json["wind_dir"],
         pressureMb: json["pressure_mb"],
-        pressureIn: json["pressure_in"].toDouble(),
+        pressureIn: json["pressure_in"],
         precipMm: json["precip_mm"],
         precipIn: json["precip_in"],
         humidity: json["humidity"],
         cloud: json["cloud"],
         feelslikeC: json["feelslike_c"],
-        feelslikeF: json["feelslike_f"].toDouble(),
+        feelslikeF: json["feelslike_f"],
         visKm: json["vis_km"],
         visMiles: json["vis_miles"],
         uv: json["uv"],
-        gustMph: json["gust_mph"].toDouble(),
-        gustKph: json["gust_kph"].toDouble(),
+        gustMph: json["gust_mph"],
+        gustKph: json["gust_kph"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -173,7 +173,7 @@ class Current {
         "temp_c": tempC,
         "temp_f": tempF,
         "is_day": isDay,
-        "condition": condition.toJson(),
+        "condition": condition?.toJson(),
         "wind_mph": windMph,
         "wind_kph": windKph,
         "wind_degree": windDegree,
@@ -197,18 +197,18 @@ class Current {
 class Condition {
   Condition({
     this.text,
-     this.icon,
-     this.code,
+    this.icon,
+    this.code,
   });
 
   String? text;
   String? icon;
-  int? code;
+  num? code;
 
   Condition copyWith({
     String? text,
     String? icon,
-    int? code,
+    num? code,
   }) =>
       Condition(
         text: text ?? this.text,
@@ -231,33 +231,33 @@ class Condition {
 
 class Location {
   Location({
-     this.name,
-    this.region,
-     this.country,
-     this.lat,
-     this.lon,
-     this.tzId,
-     this.localtimeEpoch,
-     this.localtime,
+    required this.name,
+    required this.region,
+    required this.country,
+    required this.lat,
+    required this.lon,
+    required this.tzId,
+    required this.localtimeEpoch,
+    required this.localtime,
   });
 
-  String? name;
-  String? region;
-  String? country;
-  double? lat;
-  double? lon;
-  String? tzId;
-  int? localtimeEpoch;
-  String? localtime;
+  String name;
+  String region;
+  String country;
+  num lat;
+  num lon;
+  String tzId;
+  num localtimeEpoch;
+  String localtime;
 
   Location copyWith({
     String? name,
     String? region,
     String? country,
-    double? lat,
-    double? lon,
+    num? lat,
+    num? lon,
     String? tzId,
-    int? localtimeEpoch,
+    num? localtimeEpoch,
     String? localtime,
   }) =>
       Location(
@@ -275,8 +275,8 @@ class Location {
         name: json["name"],
         region: json["region"],
         country: json["country"],
-        lat: json["lat"].toDouble(),
-        lon: json["lon"].toDouble(),
+        lat: json["lat"],
+        lon: json["lon"],
         tzId: json["tz_id"],
         localtimeEpoch: json["localtime_epoch"],
         localtime: json["localtime"],
