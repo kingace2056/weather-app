@@ -1,15 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants/color_constants.dart';
-import 'package:weather_app/model/location_model.dart';
-import 'package:weather_app/model/weather_model.dart';
-import 'package:weather_app/providers/loc_provider.dart';
-import 'package:weather_app/providers/location_provider.dart';
+
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/services/location_services.dart';
 import 'package:weather_app/services/weather_services.dart';
@@ -46,7 +41,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var locProvider = Provider.of<LocProvider>(context);
     var weatherProvider = Provider.of<WeatherProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -108,9 +102,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.location_on),
-                    Text(weatherProvider.weatherModel.location!.region == '' ||
-                            weatherProvider.weatherModel.location!.region ==
-                                'null'
+                    Text(weatherProvider.weatherModel.location!.region == ''
                         ? 'Getting Location'
                         : weatherProvider.weatherModel.location!.region)
                   ],

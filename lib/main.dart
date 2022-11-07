@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/providers/loc_provider.dart';
-import 'package:weather_app/providers/location_provider.dart';
+
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/view/home/homepage.dart';
 
@@ -15,11 +14,9 @@ void main() {
   ]);
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(
-        create: (context) => LocationProvider(),
-      ),
+     
       ChangeNotifierProvider(create: (context) => WeatherProvider()),
-      ChangeNotifierProvider(create: (context) => LocProvider()),
+      
     ],
     child: const MyApp(),
   ));

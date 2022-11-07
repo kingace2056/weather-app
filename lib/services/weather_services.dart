@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/constants/url_constants.dart';
 import 'package:weather_app/model/weather_model.dart';
-import 'package:weather_app/providers/location_provider.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/services/location_services.dart';
@@ -16,8 +16,7 @@ class WeatherServices extends ChangeNotifier {
     String? city = prefs.getString('city');
     String? latitude = prefs.getString('latitude');
     String? longitude = prefs.getString('longitude');
-    var locationProvider =
-        Provider.of<LocationProvider>(context, listen: false);
+
     var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
     try {
       if (city == null || city == 'null' || city == '') {
