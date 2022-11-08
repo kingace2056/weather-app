@@ -44,17 +44,27 @@ class _HomePageState extends State<HomePage> {
     var weatherProvider = Provider.of<WeatherProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Weather App'),
+        title: const Text('Weather App'),
         centerTitle: true,
       ),
       backgroundColor: primWhite,
+      floatingActionButton: IconButton(
+        style: IconButton.styleFrom(
+            backgroundColor: labelGrn, foregroundColor: primColor),
+        onPressed: () async {
+          log('Acquiring location');
+          await locationServices.getLocation(context: context);
+          log('Acquired location');
+        },
+        icon: const Icon(Icons.location_on_outlined),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+              padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: TextFormField(
                 onFieldSubmitted: (value) async {
                   log('Search Pressed');
@@ -79,9 +89,9 @@ class _HomePageState extends State<HomePage> {
 
                         await getWeather();
                       },
-                      icon: Icon(Icons.search)),
-                  contentPadding:
-                      EdgeInsets.only(left: 30, top: 10, bottom: 10, right: 20),
+                      icon: const Icon(Icons.search)),
+                  contentPadding: const EdgeInsets.only(
+                      left: 30, top: 10, bottom: 10, right: 20),
                   fillColor: labelBlue,
                   filled: true,
                   hintText: 'Search city or location',
@@ -93,7 +103,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Center(
               child: Container(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                 decoration: BoxDecoration(
                     color: labelRed, borderRadius: BorderRadius.circular(20)),
                 child: Row(
@@ -101,10 +111,10 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.location_on),
-                    Text(weatherProvider.weatherModel.location!.region == ''
+                    const Icon(Icons.location_on),
+                    Text(weatherProvider.weatherModel.location!.name == ''
                         ? 'Getting Location'
-                        : weatherProvider.weatherModel.location!.region)
+                        : weatherProvider.weatherModel.location!.name)
                   ],
                 ),
               ),
@@ -115,13 +125,13 @@ class _HomePageState extends State<HomePage> {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Positioned(
+                    const Positioned(
                       child: Text(
                         '30',
                         style: TextStyle(fontSize: 120),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                         right: -10,
                         top: 40,
                         child: Text(
@@ -131,23 +141,23 @@ class _HomePageState extends State<HomePage> {
                   ],
                 )),
             Container(
-              padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+              padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
               decoration: BoxDecoration(
                   color: labelGrn, borderRadius: BorderRadius.circular(50)),
-              child: Text(
+              child: const Text(
                 'Cloudy',
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: primColor,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   )),
@@ -209,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                         ? '${weatherProvider.weatherModel.current?.lastUpdated.toString()}'
                         : ' ',
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 90,
                   )
                 ],
