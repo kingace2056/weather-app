@@ -8,7 +8,7 @@ import 'package:weather_app/view/home/homepage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
