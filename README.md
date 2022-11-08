@@ -1,10 +1,20 @@
-# weather_app
+# Weather App
 
-A new Flutter project.
+Assignment Task
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Project Structure :
+    Model - Contains model classes
+    View - Contains Views of the app. It contains UI contents
+    Providers - Contains providers
+    Constants - Contains various constants used throughout the project
+
+TODO:
+    Please follow these steps before running app:
+        - Replace apiKey constant in lib\constants\url_constants.dart
+        - in terminal type ``` flutter pub get ```
+        - to run project type in terminal ```flutter run```
 
 A few resources to get you started if this is your first Flutter project:
 
