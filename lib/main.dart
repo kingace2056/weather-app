@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/view/help_screen/help_screen.dart';
@@ -13,6 +14,7 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => WeatherProvider()),

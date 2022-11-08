@@ -12,7 +12,8 @@ import 'package:weather_app/services/location_services.dart';
 class WeatherServices extends ChangeNotifier {
   getWeatherDetail({required BuildContext context}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    LocationServices locationServices = LocationServices();
+    await locationServices.getLocation(context: context);
     String? city = prefs.getString('city');
     String? latitude = prefs.getString('latitude');
     String? longitude = prefs.getString('longitude');
@@ -20,7 +21,6 @@ class WeatherServices extends ChangeNotifier {
     var weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
     try {
       if (city == null || city == 'null' || city == '') {
-        await LocationServices().getLocation(context: context);
         log('chkPoint 1 ');
         var reqUri = Uri(
             scheme: 'https',
@@ -33,6 +33,7 @@ class WeatherServices extends ChangeNotifier {
         http.Response response = await http.get(reqUri);
         log('chkPoint 2 ');
         weatherProvider.setWeather(response.body);
+        notifyListeners();
         log('chkPoint 3');
       } else {
         log('chkPoint 4 ');
@@ -50,7 +51,9 @@ class WeatherServices extends ChangeNotifier {
         log(response.body.toString());
         weatherProvider.setWeather(response.body);
         log('chkPoint 7 ');
+        notifyListeners();
       }
+
       notifyListeners();
     } catch (e) {
       log('Woops error');

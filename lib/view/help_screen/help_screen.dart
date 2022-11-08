@@ -13,16 +13,14 @@ class HelpScreen extends StatefulWidget {
 class HelpScreenState extends State<HelpScreen> {
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 5),
-        () => Navigator.popAndPushNamed(context, '/home'));
-    Stopwatch().toString();
-
+    var timer = Timer(const Duration(seconds: 5),
+        () => Navigator.pushReplacementNamed(context, '/home'));
+    timer;
     return Scaffold(
       backgroundColor: primColor,
       body: Column(
@@ -59,6 +57,7 @@ class HelpScreenState extends State<HelpScreen> {
                           foregroundColor: Colors.black,
                           backgroundColor: labelGrn),
                       onPressed: () {
+                        timer.cancel();
                         Navigator.popAndPushNamed(context, '/home');
                       },
                       child: const Text('Skip')),

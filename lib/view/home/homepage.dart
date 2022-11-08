@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   getLocData() async {
+    log('Getting location');
     await locationServices.getLocation(context: context);
   }
 
@@ -42,7 +43,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var weatherProvider = Provider.of<WeatherProvider>(context);
+    var weatherProvider = context.watch<WeatherProvider>();
+    log(weatherProvider.weatherModel.current!.condition.icon.toString() +
+        ' is iconurl');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Weather App'),
@@ -51,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
               color: primColor,
               onPressed: () => Navigator.popAndPushNamed(context, '/'),
-              icon: Icon(
+              icon: const Icon(
                 Icons.help,
                 size: 30,
               ))
@@ -64,6 +67,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () async {
           log('Acquiring location');
           await locationServices.getLocation(context: context);
+          await weatherServices.getWeatherDetail(context: context);
           log('Acquired location');
         },
         icon: const Icon(Icons.location_on_outlined),
@@ -91,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                 controller: _locationController,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
-                  suffixIcon: IconButton(   
+                  suffixIcon: IconButton(
                       onPressed: () async {
                         log('Search Pressed');
                         SharedPreferences preferences =
@@ -139,10 +143,10 @@ class _HomePageState extends State<HomePage> {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const Positioned(
+                    Positioned(
                       child: Text(
-                        '30',
-                        style: TextStyle(fontSize: 120),
+                        '${weatherProvider.weatherModel.current?.tempF}',
+                        style: const TextStyle(fontSize: 100),
                       ),
                     ),
                     const Positioned(
@@ -155,14 +159,34 @@ class _HomePageState extends State<HomePage> {
                   ],
                 )),
             Container(
-              padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-              decoration: BoxDecoration(
-                  color: labelGrn, borderRadius: BorderRadius.circular(50)),
-              child: const Text(
-                'Cloudy',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                decoration: BoxDecoration(
+                    color: labelGrn, borderRadius: BorderRadius.circular(50)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '${weatherProvider.weatherModel.current?.condition.text}',
+                      style: const TextStyle(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    Image.network(
+                      weatherProvider.weatherModel.current!.condition.icon ==
+                                  null ||
+                              weatherProvider
+                                      .weatherModel.current!.condition.icon ==
+                                  '' ||
+                              weatherProvider
+                                      .weatherModel.current!.condition.icon ==
+                                  ' '
+                          ? 'https://cdn.weatherapi.com/weather/64x64/night/113.png'
+                          : 'http:${weatherProvider.weatherModel.current!.condition.icon}',
+                      fit: BoxFit.fitHeight,
+                    )
+                  ],
+                )),
             const SizedBox(
               height: 80,
             ),

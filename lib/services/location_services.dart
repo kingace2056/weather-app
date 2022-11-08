@@ -5,11 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/model/weather_model.dart';
-
+import 'package:weather_app/providers/weather_provider.dart';
 
 class LocationServices {
   getLocation({required BuildContext context}) async {
-  
     SharedPreferences prefs = await SharedPreferences.getInstance();
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
@@ -26,11 +25,12 @@ class LocationServices {
     }
     Position position = await Geolocator.getCurrentPosition(
         forceAndroidLocationManager: true,
-        desiredAccuracy: LocationAccuracy.high);
-
+        desiredAccuracy: LocationAccuracy.lowest);
+    prefs.clear();
     prefs.setString('latitude', position.latitude.toString());
     prefs.setString('longitude', position.longitude.toString());
-;
+
+    ;
     log(position.latitude.toString());
   }
 }

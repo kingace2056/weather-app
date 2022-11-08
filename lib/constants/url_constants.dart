@@ -1,2 +1,2 @@
 String baseUrl = 'api.weatherapi.com';
-String apiKey = 'please enter your api key';
+String apiKey = '1bc0383d81444b58b1432929200711';
