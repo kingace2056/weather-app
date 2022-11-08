@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _locationController = TextEditingController();
   LocationServices locationServices = LocationServices();
   WeatherServices weatherServices = WeatherServices();
+  String cityName = '';
   @override
   void initState() {
     // TODO: implement initState
@@ -46,6 +47,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Weather App'),
         centerTitle: true,
+        actions: [
+          IconButton(
+              color: primColor,
+              onPressed: () => Navigator.popAndPushNamed(context, '/'),
+              icon: Icon(
+                Icons.help,
+                size: 30,
+              ))
+        ],
       ),
       backgroundColor: primWhite,
       floatingActionButton: IconButton(
@@ -71,8 +81,10 @@ class _HomePageState extends State<HomePage> {
                   SharedPreferences preferences =
                       await SharedPreferences.getInstance();
                   preferences.clear();
-                  preferences.setString('city', value);
-
+                  preferences.setString('city', _locationController.text);
+                  setState(() {
+                    cityName = preferences.getString('city').toString();
+                  });
                   await getWeather();
                 },
                 textAlign: TextAlign.left,
@@ -86,7 +98,9 @@ class _HomePageState extends State<HomePage> {
                             await SharedPreferences.getInstance();
                         preferences.clear();
                         preferences.setString('city', _locationController.text);
-
+                        setState(() {
+                          cityName = preferences.getString('city').toString();
+                        });
                         await getWeather();
                       },
                       icon: const Icon(Icons.search)),
@@ -94,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                       left: 30, top: 10, bottom: 10, right: 20),
                   fillColor: labelBlue,
                   filled: true,
-                  hintText: 'Search city or location',
+                  hintText: weatherProvider.weatherModel.location!.name,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none),

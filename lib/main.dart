@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weather_app/providers/weather_provider.dart';
+import 'package:weather_app/view/help_screen/help_screen.dart';
 import 'package:weather_app/view/home/homepage.dart';
 
 void main() {
@@ -14,9 +15,7 @@ void main() {
   ]);
   runApp(MultiProvider(
     providers: [
-     
       ChangeNotifierProvider(create: (context) => WeatherProvider()),
-      
     ],
     child: const MyApp(),
   ));
@@ -35,7 +34,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
-      routes: {'/': (context) => const HomePage()},
+      routes: {
+        // '/': (context) => const HomePage()
+        '/': (context) => const HelpScreen(),
+        '/home': (context) => const HomePage()
+      },
     );
   }
 }

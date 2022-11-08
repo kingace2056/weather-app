@@ -54,6 +54,8 @@ class WeatherServices extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log('Woops error');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sorry, Couldnt find location')));
       log(e.toString());
     }
   }
