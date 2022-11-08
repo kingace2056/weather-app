@@ -9,7 +9,7 @@ import 'package:weather_app/model/weather_model.dart';
 
 class LocationServices {
   getLocation({required BuildContext context}) async {
-
+  
     SharedPreferences prefs = await SharedPreferences.getInstance();
     LocationPermission permission;
     permission = await Geolocator.checkPermission();

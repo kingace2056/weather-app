@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 controller: _locationController,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
-                  suffixIcon: IconButton(
+                  suffixIcon: IconButton(   
                       onPressed: () async {
                         log('Search Pressed');
                         SharedPreferences preferences =
